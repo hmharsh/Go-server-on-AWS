@@ -1,0 +1,23 @@
+---
+- name: Create a sandbox instance
+  hosts: localhost
+  gather_facts: False
+  roles:
+    - role: vm_setup
+
+
+- name: Configure application
+  hosts: launched[1:]
+  become: true
+  gather_facts: True
+  roles:
+    - role: server_setup
+
+- name: Configure load balancer
+  hosts: launched[0]
+  become: true
+  gather_facts: True
+  roles:
+    - role: load_balancer_setup
+
+      

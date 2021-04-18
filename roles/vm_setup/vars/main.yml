@@ -1,0 +1,9 @@
+---
+# vars file for vm_setup
+    keypair: assignment_key
+    instance_type: t2.micro
+    project_name: assignment
+    image: ami-0742b4e673072066f
+    region: us-east-1
+    vpc_subnet_id: "subnet-b343c892"
+    instance_count: 3

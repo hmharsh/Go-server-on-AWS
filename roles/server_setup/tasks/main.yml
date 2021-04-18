@@ -1,0 +1,37 @@
+---
+    - name: download golang tar
+      get_url:
+        url: "https://storage.googleapis.com/golang/go{{new_go_version}}.linux-amd64.tar.gz"
+        dest: "{{ansible_env.HOME}}"
+        mode: 0440
+
+    - name: Extract the Go tarball
+      unarchive:
+        src: "{{ansible_env.HOME}}/go{{new_go_version}}.linux-amd64.tar.gz"
+        dest: /usr/local
+        copy: no
+      become: yes
+
+    - name: create go directories in home
+      file:
+        path: "{{item}}"
+        state: directory
+        # owner: "{{file_owner}}"
+        # group: "{{file_owner}}"
+        mode: 0775
+      with_items:
+        - "{{ansible_env.HOME}}/go"
+        - "{{ansible_env.HOME}}/go/bin"
+
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: server.go
+        dest: "{{ansible_env.HOME}}/server.go"
+        mode: "0644"
+
+    - name: Start the server
+      command:
+        cmd: "nohup /usr/local/go/bin/go run {{ansible_env.HOME}}/server.go >/dev/null 2>&1 &"
+      become: true
+      async: 10
+      poll: 0

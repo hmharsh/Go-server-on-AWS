@@ -1,0 +1,4 @@
+---
+    keypair: assignment_key
+    ansible_ssh_private_key_file: "./keys/{{ keypair }}.pem"
+    new_go_version: 1.13

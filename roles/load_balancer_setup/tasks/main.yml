@@ -1,0 +1,4 @@
+--- 
+    - name: access another instance privete IP
+      debug: var=hostvars['localhost']['ec2']['instances'][0]['private_ip']  
+    
